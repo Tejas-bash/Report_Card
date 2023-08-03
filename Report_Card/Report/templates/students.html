@@ -1,0 +1,76 @@
+{% extends 'base.html' %}
+
+{% load static %}
+
+{% block content %}
+<div class="container mt-5">
+    <div class="row">
+
+        <form class="d-flex mb-5" role="search">
+            <input class="form-control me-2" type="search" name="search" placeholder="Search" aria-label="Search">
+            <button class="btn btn-success" type="submit">Search</button>
+          </form>
+
+        <div class="table-responsive">
+            <table class="table table-bordered table-striped">
+                <thead>
+                    <tr>
+                        <th scope="col">#</th>
+                        <th scope="col">Student ID</th>
+                        <th scope="col">Department</th>
+                        <th scope="col">Student Name</th>
+                        <th scope="col">Student Email</th>
+                        <th scope="col">Student Age</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    {% for query in queryset %}
+                    <tr>
+                        <th scope="row">{{ forloop.counter }}</th>
+                        <td> <a href="{% url 'see_marks' query.student_id %}">{{ query.student_id }}</a></td>
+                        <td>{{ query.department }}</td>
+                        <td>{{ query.student_name }}</td>
+                        <td>{{ query.student_email }}</td>
+                        <td>{{ query.student_age }}</td>
+                    </tr>
+                    {% endfor %}
+                </tbody>
+            </table>
+        </div>
+        <nav aria-label="Page navigation text-center">
+            <ul class="pagination justify-content-center">
+                {% if queryset.has_previous %}
+                    <li class="page-item">
+                        <a class="page-link" href="?search={{ request.GET.search }}&page=1" aria-label="First">
+                            <span aria-hidden="true">&laquo;&laquo;</span>
+                        </a>
+                    </li>
+                    <li class="page-item">
+                        <a class="page-link" href="?search={{ request.GET.search }}&page={{ queryset.previous_page_number }}" aria-label="Previous">
+                            <span aria-hidden="true">&laquo;</span>
+                        </a>
+                    </li>
+                {% endif %}
+                {% for num in queryset.paginator.page_range %}
+                    <li class="page-item {% if queryset.number == num %}active{% endif %}">
+                        <a class="page-link" href="?search={{ request.GET.search }}&page={{ num }}">{{ num }}</a>
+                    </li>
+                {% endfor %}
+                {% if queryset.has_next %}
+                    <li class="page-item">
+                        <a class="page-link" href="?search={{ request.GET.search }}&page={{ queryset.next_page_number }}" aria-label="Next">
+                            <span aria-hidden="true">&raquo;</span>
+                        </a>
+                    </li>
+                    <li class="page-item">
+                        <a class="page-link" href="?search={{ request.GET.search }}&page={{ queryset.paginator.num_pages }}" aria-label="Last">
+                            <span aria-hidden="true">&raquo;&raquo;</span>
+                        </a>
+                    </li>
+                {% endif %}
+            </ul>
+        </nav>
+        
+    </div>
+</div>
+{% endblock content %}

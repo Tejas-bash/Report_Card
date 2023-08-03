@@ -1,0 +1,33 @@
+{% extends 'base.html' %}
+
+{% load static %}
+
+{% block content %}
+<div class="container mt-5">
+    <div class="row">
+
+        <div class="table-responsive">
+            <h3 class="alert alert-danger">Rank : {{queryset.first.student.studentreportmarks.first.student_rank}}</h3>
+            <h3 class="alert alert-danger">Total : {{total.total_marks}}</h3>
+            <h3 class="alert alert-danger">Date/Time of Result : {{queryset.first.student.studentreportmarks.first.Date_of_report_card_generation}}</h3>
+            <table class="table table-bordered table-striped">
+                <thead>
+                    <th>ID</th>
+                    <td><b>Subject</b></td>
+                    <td><b>Marks</b></td>
+                </thead>
+                <tbody>
+                    {% for query in queryset %}
+                    <tr>
+                        <th scope="row">{{ forloop.counter }}</th>
+                        <td><b>{{ query.subject }}</b></td>
+                        <td><b>{{ query.marks }}</b></td>
+                    </tr>
+                    {% endfor %}
+                </tbody>
+            </table>
+        </div>
+        
+    </div>
+</div>
+{% endblock content %}
